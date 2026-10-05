@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Arpita! 🎂🎉</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<!-- Confetti library -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% 20%, #2e173a 0%, #15091f 60%, #08030c 100%);
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sparkle-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, #ffd700, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 80px 140px, #ff69b4, rgba(0,0,0,0)),
+    radial-gradient(3px 3px at 250px 220px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 350px 80px, #ffaa00, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 400px 400px;
+  opacity: 0.6;
+}
+
+/* STAGE 1: RIBBON CUT */
+#stage1 {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(10, 4, 16, 0.95);
+  transition: opacity 0.8s ease, visibility 0.8s;
+}
+
+.ribbon-instruction {
+  font-size: 24px;
+  color: #ffde7d;
+  margin-bottom: 70px;
+  text-align: center;
+  animation: pulseText 1.5s infinite alternate;
+  font-weight: 600;
+  padding: 0 20px;
+}
+
+@keyframes pulseText {
+  from { transform: scale(0.97); opacity: 0.85; }
+  to { transform: scale(1.03); opacity: 1; text-shadow: 0 0 15px rgba(255,222,125,0.7); }
+}
+
+.ribbon-container {
+  width: 100vw;
+  height: 90px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ribbon-left, .ribbon-right {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(180deg, #d31027 0%, #ea384d 50%, #900010 100%);
+  box-shadow: 0 10px 25px rgba(211, 16, 39, 0.4), inset 0 2px 4px rgba(255,255,255,0.4);
+  transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.ribbon-left {
+  left: 0;
+  width: 50%;
+  border-right: 2px dashed rgba(255,255,255,0.6);
+}
+
+.ribbon-right {
+  right: 0;
+  width: 50%;
+  border-left: 2px dashed rgba(255,255,255,0.6);
+}
+
+.scissor-btn {
+  position: absolute;
+  z-index: 60;
+  cursor: pointer;
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s ease;
+  user-select: none;
+}
+
+.scissor-icon {
+  font-size: 60px;
+  filter: drop-shadow(0 5px 12px rgba(255, 215, 0, 0.6));
+  animation: scissorWiggle 1s infinite alternate ease-in-out;
+}
+
+@keyframes scissorWiggle {
+  from { transform: rotate(-10deg) scale(1); }
+  to { transform: rotate(15deg) scale(1.1); }
+}
+
+.scissor-label {
+  background: #ffde7d;
+  color: #4a1500;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-top: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.cut-active .ribbon-left {
+  transform: translateX(-110%) rotate(-12deg);
+}
+.cut-active .ribbon-right {
+  transform: translateX(110%) rotate(12deg);
+}
+.cut-active .scissor-btn {
+  transform: scale(0);
+  opacity: 0;
+}
+
+/* STAGE 2: GIFT UNWRAP */
+#stage2 {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+
+.gift-box-wrapper {
+  position: relative;
+  width: 230px;
+  height: 230px;
+  cursor: pointer;
+  perspective: 1000px;
+  animation: floatBox 2.5s infinite ease-in-out alternate;
+}
+
+@keyframes floatBox {
+  from { transform: translateY(0); }
+  to { transform: translateY(-15px); }
+}
+
+.gift-base {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 45px rgba(255, 65, 108, 0.45);
+  border: 3px solid #ffe885;
+}
+
+.box-ribbon-v {
+  position: absolute;
+  left: calc(50% - 15px);
+  width: 30px;
+  height: 100%;
+  background: linear-gradient(90deg, #ffd700, #fff2a8, #ffd700);
+}
+.box-ribbon-h {
+  position: absolute;
+  top: calc(50% - 15px);
+  height: 30px;
+  width: 100%;
+  background: linear-gradient(180deg, #ffd700, #fff2a8, #ffd700);
+}
+
+.gift-bow {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 65px;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.4));
+  z-index: 5;
+}
+
+.tap-to-open {
+  margin-top: 35px;
+  font-size: 20px;
+  color: #ffb5d0;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.unwrapping {
+  animation: explodePaper 0.8s forwards cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+@keyframes explodePaper {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3) rotate(15deg); opacity: 0.8; }
+  100% { transform: scale(2) rotate(-25deg); opacity: 0; filter: blur(10px); }
+}
+
+/* STAGE 3: GRAND REVEAL */
+#stage3 {
+  display: none;
+  width: min(92%, 580px);
+  margin: 30px auto;
+  text-align: center;
+  z-index: 10;
+  position: relative;
+  animation: revealContent 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes revealContent {
+  0% { opacity: 0; transform: translateY(40px) scale(0.9); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.birthday-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(38px, 8vw, 60px);
+  color: #ffd700;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  margin-bottom: 4px;
+}
+
+.subtitle-tag {
+  font-size: 16px;
+  color: #ff9ec7;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 25px;
+}
+
+.polaroid-card {
+  background: #ffffff;
+  padding: 16px 16px 28px;
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 35px rgba(255, 105, 180, 0.35);
+  transform: rotate(-3deg);
+  transition: transform 0.4s ease;
+  margin: 0 auto 28px;
+  width: min(100%, 340px);
+}
+
+.polaroid-card:hover {
+  transform: rotate(0deg) scale(1.03);
+}
+
+.photo-wrapper {
+  width: 100%;
+  height: 350px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f0e6ed;
+}
+
+.photo-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.polaroid-caption {
+  font-family: 'Caveat', cursive;
+  font-size: 28px;
+  color: #333;
+  margin-top: 14px;
+  font-weight: 700;
+}
+
+.wish-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 28px 24px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+  color: #fff;
+  line-height: 1.85;
+  font-size: 16px;
+  text-align: left;
+}
+
+.wish-card p {
+  margin-bottom: 12px;
+}
+
+.wish-highlight {
+  color: #ff99c8;
+  font-weight: 600;
+}
+
+.candles-area {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.blow-btn {
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  border: none;
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #3b1300;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(255, 140, 0, 0.4);
+  transition: 0.3s;
+}
+
+.blow-btn:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 500px) {
+  .ribbon-instruction { font-size: 19px; }
+  .photo-wrapper { height: 300px; }
+  .wish-card { font-size: 14.5px; }
+}
+</style>
+</head>
+<body>
+
+<div class="sparkle-bg"></div>
+
+<!-- STEP 1: RIBBON CUT -->
+<div id="stage1">
+  <div class="ribbon-instruction">✂️ Tap on the Scissor to cut the Ribbon!</div>
+
+  <div class="ribbon-container" id="ribbonBox">
+    <div class="ribbon-left"></div>
+    <div class="ribbon-right"></div>
+
+    <button class="scissor-btn" id="scissorBtn" onclick="cutTheRibbon()">
+      <span class="scissor-icon">✂</span>
+      <span class="scissor-label">CUT ME</span>
+    </button>
+  </div>
+</div>
+
+<!-- STEP 2: GIFT UNWRAP -->
+<div id="stage2">
+  <div class="gift-box-wrapper" id="giftBox" onclick="unwrapTheGift()">
+    <div class="gift-bow">🎀</div>
+    <div class="gift-base">
+      <div class="box-ribbon-v"></div>
+      <div class="box-ribbon-h"></div>
+    </div>
+  </div>
+  <div class="tap-to-open">🎁 Tap the Gift to Unwrap!</div>
+</div>
+
+<!-- STEP 3: REVEAL -->
+<div id="stage3">
+  <h1 class="birthday-title">Happy Birthday, Arpita! 🎂</h1>
+  <div class="subtitle-tag">To The Best Sister Ever ❤️</div>
+
+  <div class="polaroid-card">
+    <div class="photo-wrapper">
+      <!-- Agar image upload na ho to default demo photo chalegi -->
+      <img id="sisterPhoto" src="arpita.jpg" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=80'" alt="Arpita Debnath">
+    </div>
+    <div class="polaroid-caption">Arpita Debnath ✨</div>
+  </div>
+
+  <div class="wish-card">
+    <p>Dear <span class="wish-highlight">Arpita</span>,</p>
+    <p>May your day be filled with endless laughter, sweet surprises, and all the happiness in the world. Having a sister like you is truly a blessing!</p>
+    <p>Keep shining bright, chasing your dreams, and inspiring everyone around you. Always remember, whatever comes your way, I am always right there cheering for you!</p>
+    <p style="text-align: right; margin-top: 15px; font-weight: 600; color: #ffd700;">— With Lots of Love ❤️</p>
+  </div>
+
+  <div class="candles-area">
+    <button class="blow-btn" id="blowBtn" onclick="blowCandles()">Make a Wish & Blow Candles 🕯️💨</button>
+  </div>
+</div>
+
+<script>
+// Sound effects using Web Audio API
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playSound(type) {
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  if (type === 'snip') {
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.15);
+    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.15);
+  } else if (type === 'unwrap') {
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(750, audioCtx.currentTime + 0.3);
+    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.3);
+  }
+}
+
+function cutTheRibbon() {
+  playSound('snip');
+  document.getElementById('ribbonBox').classList.add('cut-active');
+  confetti({ particleCount: 120, spread: 90, origin: { y: 0.5 }, colors: ['#ff0033', '#ffd700', '#ffffff', '#ff69b4'] });
+
+  setTimeout(() => {
+    const stage1 = document.getElementById('stage1');
+    stage1.style.opacity = '0';
+    stage1.style.visibility = 'hidden';
+    document.getElementById('stage2').style.display = 'flex';
+  }, 900);
+}
+
+function unwrapTheGift() {
+  playSound('unwrap');
+  document.getElementById('giftBox').classList.add('unwrapping');
+  confetti({ particleCount: 160, spread: 120, origin: { y: 0.6 }, colors: ['#ffd700', '#ff416c', '#ff4b2b', '#8a2be2'] });
+
+  setTimeout(() => {
+    document.getElementById('stage2').style.display = 'none';
+    document.getElementById('stage3').style.display = 'block';
+    
+    // Continuous Confetti
+    let end = Date.now() + (3 * 1000);
+    (function frame() {
+      confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 } });
+      confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 } });
+      if (Date.now() < end) requestAnimationFrame(frame);
+    }());
+  }, 750);
+}
+
+function blowCandles() {
+  const btn = document.getElementById('blowBtn');
+  btn.innerHTML = '✨ Wish Made! Happy Birthday Arpita! ✨';
+  btn.style.background = '#00b894';
+  btn.style.color = '#fff';
+  btn.disabled = true;
+
+  confetti({ particleCount: 200, spread: 160, origin: { y: 0.8 } });
+}
+</script>
+</body>
+</html>
